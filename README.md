@@ -1,3 +1,2 @@
-# envi_heater
-
-Very early, probably very buggy Envi eHeat integration.
+This fork supports Celsius. With the main branch I had negative C values because it was assuming the number was in Fahrenheit. 
+Also am confirming multiple Envi devices work.
