@@ -19,9 +19,8 @@ class EnviHeater(ClimateEntity):
         | ClimateEntityFeature.TURN_ON
         | ClimateEntityFeature.TURN_OFF
     )
-    _attr_temperature_unit = UnitOfTemperature.FAHRENHEIT
-    _attr_target_temperature_high = 86
-    _attr_target_temperature_low = 50
+    _attr_target_temperature_high = 30  # Celsius
+    _attr_target_temperature_low = 10   # Celsius
     _enable_turn_on_off_backwards_compatibility = False
 
     def __init__(self, hass: HomeAssistant, entry: ConfigEntry, client, device_id: str):
@@ -37,16 +36,20 @@ class EnviHeater(ClimateEntity):
         self._target_temperature = None
         self._attr_hvac_mode = HVACMode.OFF
 
+        # Respect Home Assistant's temperature unit setting
+        unit = hass.config.units.temperature_unit
+        self._attr_temperature_unit = unit
+
     async def async_update(self):
         """Update device state from API."""
         try:
             data = await self.client.get_device_state(self.device_id)
-            
+
             self._current_temperature = data.get("ambient_temperature")
             self._target_temperature = data.get("current_temperature")
             self._attr_hvac_mode = HVACMode.HEAT if data.get("state") == 1 else HVACMode.OFF
             self._attr_available = True
-            
+
         except Exception as e:
             self._attr_available = False
             _LOGGER.warning("Failed to update %s: %s", self.device_id, str(e))
@@ -66,7 +69,7 @@ class EnviHeater(ClimateEntity):
         temperature = kwargs.get(ATTR_TEMPERATURE)
         if temperature is None:
             return
-            
+
         try:
             await self.client.update_device(self.device_id, {"temperature": temperature})
             self._target_temperature = temperature
@@ -93,7 +96,7 @@ async def async_setup_entry(
 ):
     """Set up all Envi heaters from a config entry."""
     client = hass.data[DOMAIN][entry.entry_id]
-    
+
     try:
         device_ids = await client.fetch_all_device_ids()
     except Exception as e:
