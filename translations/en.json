@@ -1,0 +1,50 @@
+{
+    "config": {
+        "step": {
+            "user": {
+                "title": "Envi Heater Setup",
+                "description": "Enter your Envi account credentials and select your preferred temperature unit.",
+                "data": {
+                    "username": "Email",
+                    "password": "Password",
+                    "temperature_unit": "Temperature Unit"
+                },
+                "data_description": {
+                    "temperature_unit": "Select how temperatures should be displayed. 'Auto' uses your Home Assistant setting."
+                }
+            }
+        },
+        "error": {
+            "invalid_auth": "Invalid username or password",
+            "cannot_connect": "Cannot connect to Envi API",
+            "no_devices": "No heaters found in your account",
+            "unknown": "An unexpected error occurred"
+        },
+        "abort": {
+            "already_configured": "This account is already configured"
+        }
+    },
+    "options": {
+        "step": {
+            "init": {
+                "title": "Envi Heater Options",
+                "description": "Configure your Envi Heater integration settings.",
+                "data": {
+                    "temperature_unit": "Temperature Unit"
+                },
+                "data_description": {
+                    "temperature_unit": "Select how temperatures should be displayed. 'Auto' uses your Home Assistant setting."
+                }
+            }
+        }
+    },
+    "selector": {
+        "temperature_unit": {
+            "options": {
+                "auto": "Auto (Use Home Assistant setting)",
+                "celsius": "Celsius (°C)",
+                "fahrenheit": "Fahrenheit (°F)"
+            }
+        }
+    }
+}
